@@ -35,12 +35,55 @@ public class LeitorDadosTesouroScrapperTest {
 	
 	@Test
 	public void testaValoresFPM() {
-		List<DadosTransferencia> dadosFPM = filtraPorBase("FPM");
-		float valorInicial = valorInicial(dadosFPM);
-		float valorFinal = valorFinal(dadosFPM);
-		System.out.println(valorInicial + " " + valorFinal) ;
-		assertEquals(589,248.20f, valorInicial);
-		assertEquals(3,400207.85f, valorFinal);
+		testaValores("FPM", 589248.20f, 3400207.85f);
+	}
+	
+	@Test
+	public void testaValoresITR() {
+		testaValores("ITR", 0.74f, 1094.55f);
+	}
+	
+	@Test
+	public void testaValoresIOF() {
+		testaValores("IOF", 0, 0);
+	}
+	
+	@Test
+	public void testaValoresLC8796() {
+		testaValores("LC 87/96", 0, 0);
+	}
+	
+	@Test
+	public void testaValoresLC87961579() {
+		testaValores("LC 87/96-1579", 0, 0);
+	}
+	
+	@Test
+	public void testaValoresCIDE() {
+		testaValores("CIDE", 0, 0);
+	}
+	
+	@Test
+	public void testaValoresFEX() {
+		testaValores("FEX", 0, 0);
+	}
+	
+	@Test
+	public void testaValoresFUNDEF() {
+		testaValores("FUNDEF", 0, 0);
+	}
+	
+	@Test
+	public void testaValoresFUNDEB() {
+		testaValores("FUNDEB", 0, 17473269.75f);
+	}
+	
+	public void testaValores(String base, float valorInicialExperado, float valorFinalEsperado) {
+		List<DadosTransferencia> dados = filtraPorBase(base);
+		float valorInicial = valorInicial(dados);
+		float valorFinal = valorFinal(dados);
+		assertEquals(valorInicialExperado, valorInicial, 0.1);
+		assertEquals(valorFinalEsperado, valorFinal, 0.1);
 	}
 
 	private float valorInicial(List<DadosTransferencia> dados) {

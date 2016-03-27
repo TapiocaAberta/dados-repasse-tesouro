@@ -3,7 +3,6 @@ package org.transparenciasjc.transftesouro.model;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,7 +20,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Municipio {
 
 	@Id
-	@GeneratedValue
 	@Column(name = "mun_id")
 	private long id;
 
@@ -36,11 +34,19 @@ public class Municipio {
 		super();
 	}
 
-	public Municipio(String nome, Estado estado) {
+	public Municipio(long id, String nome) {
 		super();
+		this.id = id;
+		this.nome = nome;
+	}
+	
+	public Municipio(long id, String nome, Estado estado) {
+		super();
+		this.id = id;
 		this.nome = nome;
 		this.estado = estado;
 	}
+	
 
 	@Override
 	public String toString() {

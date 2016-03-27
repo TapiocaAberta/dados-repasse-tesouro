@@ -12,6 +12,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.transparenciasjc.transftesouro.leitor.LeitorDadosTesouro;
+import org.transparenciasjc.transftesouro.leitor.TesouroScrapper;
 import org.transparenciasjc.transftesouro.model.Municipio;
 import org.transparenciasjc.transftesouro.model.dto.DadosTransferencia;
 import org.transparenciasjc.transftesouro.model.dto.TransferenciaDTO;
@@ -24,6 +25,7 @@ import org.transparenciasjc.transftesouro.model.dto.TransferenciaDTO;
  * @author wsiqueir
  *
  */
+@TesouroScrapper
 public class LeitorDadosTesouroScrapper implements LeitorDadosTesouro {
 
 	static private NumberFormat nfPtBr;

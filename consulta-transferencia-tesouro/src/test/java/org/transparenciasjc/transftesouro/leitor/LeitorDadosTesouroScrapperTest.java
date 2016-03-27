@@ -94,7 +94,7 @@ public class LeitorDadosTesouroScrapperTest {
 	}
 
 	private List<DadosTransferencia> filtraPorBase(String base) {
-		return dadosMunicipio.getDadosTransferencia().stream().peek(d -> System.out.println(d.getTipo())).filter(d -> d.getTipo().equals(base)).collect(Collectors.toList());
+		return dadosMunicipio.getDadosTransferencia().stream().filter(d -> d.getTipo().equals(base)).collect(Collectors.toList());
 	}
 
 }

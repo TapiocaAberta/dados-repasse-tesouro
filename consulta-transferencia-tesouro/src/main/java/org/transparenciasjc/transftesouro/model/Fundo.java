@@ -14,29 +14,29 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @XmlRootElement
 @Entity
-@Table(name = "tipo_transferencia", uniqueConstraints = @UniqueConstraint(columnNames = { "ttr_nome" }))
+@Table(name = "fundo", uniqueConstraints = @UniqueConstraint(columnNames = { "fnd_nome" }))
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "cache-classes-basicas")
-public class TipoTransferencia {
+public class Fundo {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "ttr_id")
+	@Column(name = "fnd_id")
 	private long id;
 
-	@Column(name = "ttr_nome")
+	@Column(name = "fnd_nome")
 	private String nome;
 
-	@Column(name = "ttr_desc", length = 10000)
+	@Column(name = "fnd_desc", length = 10000)
 	private String descricao;
 
-	public TipoTransferencia(String nome, String descricao) {
+	public Fundo(String nome, String descricao) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
 	}
 
-	public TipoTransferencia() {
+	public Fundo() {
 		super();
 	}
 

@@ -15,10 +15,10 @@ import javax.inject.Inject;
 
 import org.transparenciasjc.transftesouro.model.Estado;
 import org.transparenciasjc.transftesouro.model.Municipio;
-import org.transparenciasjc.transftesouro.model.TipoTransferencia;
+import org.transparenciasjc.transftesouro.model.Fundo;
 import org.transparenciasjc.transftesouro.service.impl.EstadoService;
 import org.transparenciasjc.transftesouro.service.impl.MunicipioService;
-import org.transparenciasjc.transftesouro.service.impl.TipoTransferenciaService;
+import org.transparenciasjc.transftesouro.service.impl.FundoService;
 
 /**
  * 
@@ -31,7 +31,7 @@ import org.transparenciasjc.transftesouro.service.impl.TipoTransferenciaService;
 @Singleton
 public class CargaDadosBase {
 
-	private static final String TTR_PROP = "/dados/tipo_transferencias.properties";
+	private static final String TTR_PROP = "/dados/fundos.properties";
 
 	private static final String MUNICIPIOS_CSV = "/dados/municipios.csv";
 
@@ -44,7 +44,7 @@ public class CargaDadosBase {
 	MunicipioService municipioService;
 
 	@Inject
-	TipoTransferenciaService tipoTransferenciaService;
+	FundoService fundoService;
 
 	@PostConstruct
 	public void cargaDadosBase() throws URISyntaxException, IOException {
@@ -61,10 +61,10 @@ public class CargaDadosBase {
 	}
 
 	private void salvaTransferencia(Object nome, Object desc) {
-		TipoTransferencia ttr = new TipoTransferencia();
+		Fundo ttr = new Fundo();
 		ttr.setNome(nome.toString());
 		ttr.setDescricao(desc.toString());
-		tipoTransferenciaService.atualizar(ttr);
+		fundoService.atualizar(ttr);
 	}
 
 	private void carregaMunicipios() {

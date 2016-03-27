@@ -3,6 +3,7 @@ package org.transparenciasjc.transftesouro.carga;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.Properties;
 import java.util.Scanner;
 
 import javax.annotation.PostConstruct;
@@ -14,8 +15,10 @@ import javax.inject.Inject;
 
 import org.transparenciasjc.transftesouro.model.Estado;
 import org.transparenciasjc.transftesouro.model.Municipio;
+import org.transparenciasjc.transftesouro.model.TipoTransferencia;
 import org.transparenciasjc.transftesouro.service.impl.EstadoService;
 import org.transparenciasjc.transftesouro.service.impl.MunicipioService;
+import org.transparenciasjc.transftesouro.service.impl.TipoTransferenciaService;
 
 /**
  * 
@@ -28,6 +31,8 @@ import org.transparenciasjc.transftesouro.service.impl.MunicipioService;
 @Singleton
 public class CargaDadosBase {
 
+	private static final String TTR_PROP = "/dados/tipo_transferencias.properties";
+
 	private static final String MUNICIPIOS_CSV = "/dados/municipios.csv";
 
 	private static final String SEPARADOR_MUN = "\\,";
@@ -38,8 +43,31 @@ public class CargaDadosBase {
 	@Inject
 	MunicipioService municipioService;
 
+	@Inject
+	TipoTransferenciaService tipoTransferenciaService;
+
 	@PostConstruct
 	public void cargaDadosBase() throws URISyntaxException, IOException {
+		carregaMunicipios();
+		carregaTipoTransferencias();
+	}
+
+	private void carregaTipoTransferencias() throws IOException {
+		Properties tiposTransfProp = new Properties();
+		InputStream tiposTransf = getClass().getResourceAsStream(TTR_PROP);
+		tiposTransfProp.load(tiposTransf);
+		tiposTransfProp.forEach(this::salvaTransferencia);
+
+	}
+
+	private void salvaTransferencia(Object nome, Object desc) {
+		TipoTransferencia ttr = new TipoTransferencia();
+		ttr.setNome(nome.toString());
+		ttr.setDescricao(desc.toString());
+		tipoTransferenciaService.atualizar(ttr);
+	}
+
+	private void carregaMunicipios() {
 		InputStream municipios = getClass().getResourceAsStream(MUNICIPIOS_CSV);
 		Scanner sc = new Scanner(municipios);
 		sc.useDelimiter("\\n").forEachRemaining(this::salvaMunicipio);
@@ -49,7 +77,7 @@ public class CargaDadosBase {
 	public void salvaMunicipio(String linha) {
 		String colunas[] = linha.split(SEPARADOR_MUN);
 		Municipio municipio = leMunicipio(colunas);
-		municipioService.salvar(municipio);
+		municipioService.atualizar(municipio);
 	}
 
 	private Municipio leMunicipio(String[] colunas) {

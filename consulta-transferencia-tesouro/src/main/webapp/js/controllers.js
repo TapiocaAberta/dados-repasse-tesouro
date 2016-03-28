@@ -42,16 +42,16 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 				.success(function(dados) {
 					$scope.carregando = false;
 					var valoresGrafico = {};
-					for(i in dados.dadosTransferencia) {
+					for (i in dados.dadosTransferencia) {
 						var d = dados.dadosTransferencia[i];
-						if(!valoresGrafico[d.ano]) {
+						if (!valoresGrafico[d.ano]) {
 							valoresGrafico[d.ano] = {}
 						}
-						if(!valoresGrafico[d.ano][d.tipo]){
+						if (!valoresGrafico[d.ano][d.tipo]) {
 							valoresGrafico[d.ano][d.tipo] = 0;
 						}
-						valoresGrafico[d.ano][d.tipo] +=  d.valor;
-					}	
+						valoresGrafico[d.ano][d.tipo] += d.valor;
+					}
 					mostraDados(valoresGrafico)
 				});
 	}
@@ -62,47 +62,60 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 		for (i in dados) {
 			categorias.push(i)
 		}
-		for(i in categorias) {
+		for (i in categorias) {
 			var c = categorias[i];
 			var d = dados[c];
-			for(j in d) {
+			for (j in d) {
 				var serie = null;
-				for(s in series) {
-					if(series[s].name == j) {
+				for (s in series) {
+					if (series[s].name == j) {
 						serie = series[s];
 					}
 				}
-				if(!serie) {
-					serie = {name: j, data: []};
+				if (!serie) {
+					serie = {
+						name : j,
+						data : []
+					};
 					series.push(serie)
 				}
 				serie.data.push(d[j]);
-			}			
+			}
 		}
 		console.log(series);
-		$("#grafico").highcharts({
-			title : {
-				text : "Transferências do tesouro para " + $scope.municipio.nome
-			},
-			yAxis : {
-				title : {
-					text : "Valor transferido"
-				},
-				min : 0
-			},
-			xAxis : {
-				title : {
-					text : "Ano"
-				},
-				categories : categorias
-			},
-			plotOptions : {
-				series : {
-					allowPointSelect : true
-				}
-			},
-			series : series
-		});
+		$("#grafico").highcharts(
+				{
+					title : {
+						text : "Transferências do tesouro para "
+								+ $scope.municipio.nome
+					},
+					tooltip : {
+						pointFormat : '<b>R$ {point.y:,.3f}</b>'
+					},
+					yAxis : {
+						title : {
+							text : "Valor transferido"
+						},
+						labels : {
+							formatter : function() {
+								return 'R$ ' + this.value.toLocaleString();
+							}
+						},
+						min : 0
+					},
+					xAxis : {
+						title : {
+							text : "Ano"
+						},
+						categories : categorias
+					},
+					plotOptions : {
+						series : {
+							allowPointSelect : true
+						}
+					},
+					series : series
+				});
 	}
 
 })

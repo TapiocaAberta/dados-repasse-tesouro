@@ -77,7 +77,7 @@ public class LeitorDadosTesouroScrapper implements LeitorDadosTesouro {
 	private Map<String, String> configuraParametos(Municipio municipio) {
 		Map<String, String> params = parametrosPadroes();
 		String sigla = municipio.getEstado().getSigla();
-		String id = String.valueOf(municipio.getId());
+		String id = String.format("%04d", municipio.getId());
 		params.put(PARAM_FORMATO, "TELA");
 		params.put(PARAM_UF, sigla);
 		params.put(PARAM_MUN_ID, id);

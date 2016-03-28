@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "municipio")
 @Cacheable
+@NamedQueries({ @NamedQuery(name = "Municipio.porSigla", query = "SELECT m FROM Municipio m WHERE m.estado.sigla = :sigla ORDER BY m.nome") })
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "cache-classes-basicas")
 public class Municipio {
 
@@ -39,14 +42,13 @@ public class Municipio {
 		this.id = id;
 		this.nome = nome;
 	}
-	
+
 	public Municipio(long id, String nome, Estado estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.estado = estado;
 	}
-	
 
 	@Override
 	public String toString() {

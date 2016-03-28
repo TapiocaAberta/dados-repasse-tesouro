@@ -29,17 +29,16 @@ public class TransfTesouroResource {
 	MunicipioService municipioService;
 	
 	@GET
-	@Path("municipio/{munId}/transferencias")
 	@Produces("application/json")
+	@Path("municipio/{munId}/transferencias")
 	public TransferenciaDTO transferenciasPorMunicipio(@PathParam("munId") long munId) {
 		return controller.buscaDadosParaMunicipio(munId);
 	}
 	
 	@GET
-	@Path("municipio/{munId}/transferencias/ano/{ano}")
 	@Produces("application/json")
+	@Path("municipio/{munId}/transferencias/ano/{ano}")
 	public TransferenciaDTO transferenciasPorMunicipioAno(@PathParam("munId") long munId, @PathParam("ano") int ano) {
-		// TODO: implementar
 		TransferenciaDTO transferencia = controller.buscaDadosParaMunicipio(munId);
 		List<DadosTransferencia> dados = transferencia.getDadosTransferencia().stream().filter(d -> d.getAno() == ano).collect(Collectors.toList());
 		transferencia.setDadosTransferencia(dados);

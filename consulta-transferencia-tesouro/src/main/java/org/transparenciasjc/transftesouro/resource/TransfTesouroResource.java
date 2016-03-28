@@ -46,8 +46,8 @@ public class TransfTesouroResource {
 	
 	@GET
 	@Path("estado/{sigla}/municipios")
-	public Map<String, Long> municipiosPorEstado(@PathParam("sigla") String sigla) {
-		return 	municipioService.porSiglaEstado(sigla).stream().collect(Collectors.toMap(Municipio::getNome, Municipio::getId));
+	public Map<Long, String> municipiosPorEstado(@PathParam("sigla") String sigla) {
+		return 	municipioService.porSiglaEstado(sigla).stream().collect(Collectors.toMap(Municipio::getId, Municipio::getNome));
 	}
 	
 }

@@ -21,7 +21,7 @@ import org.transparenciasjc.transftesouro.service.impl.MunicipioService;
 @Stateless
 @Path("/")
 @Produces("application/json;charset=utf-8")
-public class TransfTesouroResource {
+public class TransferenciaTesouroResource {
 
 	@Inject
 	TransferenciaController controller;

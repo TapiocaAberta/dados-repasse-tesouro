@@ -102,6 +102,7 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 								+ $scope.municipio.nome
 					},
 					tooltip : {
+						headerFormat: '{point.key} - {series.name}<br />',
 						pointFormat : '<b>R$ {point.y:,.3f}</b>'
 					},
 					yAxis : {

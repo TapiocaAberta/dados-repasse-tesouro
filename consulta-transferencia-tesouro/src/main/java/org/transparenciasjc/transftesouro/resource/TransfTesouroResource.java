@@ -20,6 +20,7 @@ import org.transparenciasjc.transftesouro.service.impl.MunicipioService;
 
 @Stateless
 @Path("/")
+@Produces("application/json;charset=utf-8")
 public class TransfTesouroResource {
 
 	@Inject
@@ -29,14 +30,12 @@ public class TransfTesouroResource {
 	MunicipioService municipioService;
 	
 	@GET
-	@Produces("application/json")
 	@Path("municipio/{munId}/transferencias")
 	public TransferenciaDTO transferenciasPorMunicipio(@PathParam("munId") long munId) {
 		return controller.buscaDadosParaMunicipio(munId);
 	}
 	
 	@GET
-	@Produces("application/json")
 	@Path("municipio/{munId}/transferencias/ano/{ano}")
 	public TransferenciaDTO transferenciasPorMunicipioAno(@PathParam("munId") long munId, @PathParam("ano") int ano) {
 		TransferenciaDTO transferencia = controller.buscaDadosParaMunicipio(munId);
@@ -47,7 +46,6 @@ public class TransfTesouroResource {
 	
 	@GET
 	@Path("estado/{sigla}/municipios")
-	@Produces("application/json")
 	public Map<String, Long> municipiosPorEstado(@PathParam("sigla") String sigla) {
 		return 	municipioService.porSiglaEstado(sigla).stream().collect(Collectors.toMap(Municipio::getNome, Municipio::getId));
 	}

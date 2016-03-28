@@ -17,6 +17,92 @@ window.mobileAndTabletcheck = function() {
 	return check;
 }
 
-TransfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
-	
+transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
+	$scope.estados = [ "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",
+			"MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
+			"RS", "RO", "RR", "SC", "SP", "SE", "TO" ];
+
+	$scope.carregaMunicipios = function() {
+		$http.get("rest/estado/" + $scope.estado + "/municipios").success(
+				function(dados) {
+					var municipios = [];
+					for (i in dados) {
+						var municipio = {};
+						municipio.id = i;
+						municipio.nome = dados[i];
+						municipios.push(municipio);
+					}
+					$scope.municipios = municipios;
+				});
+	}
+
+	$scope.verTodasTransferencias = function() {
+		$scope.carregando = true;
+		$http.get("rest/municipio/" + $scope.municipio.id + "/transferencias")
+				.success(function(dados) {
+					$scope.carregando = false;
+					var valoresGrafico = {};
+					for(i in dados.dadosTransferencia) {
+						var d = dados.dadosTransferencia[i];
+						if(!valoresGrafico[d.ano]) {
+							valoresGrafico[d.ano] = {}
+						}
+						if(!valoresGrafico[d.ano][d.tipo]){
+							valoresGrafico[d.ano][d.tipo] = 0;
+						}
+						valoresGrafico[d.ano][d.tipo] +=  d.valor;
+					}	
+					mostraDados(valoresGrafico)
+				});
+	}
+
+	var mostraDados = function(dados) {
+		var categorias = [];
+		var series = [];
+		for (i in dados) {
+			categorias.push(i)
+		}
+		for(i in categorias) {
+			var c = categorias[i];
+			var d = dados[c];
+			for(j in d) {
+				var serie = null;
+				for(s in series) {
+					if(series[s].name == j) {
+						serie = series[s];
+					}
+				}
+				if(!serie) {
+					serie = {name: j, data: []};
+					series.push(serie)
+				}
+				serie.data.push(d[j]);
+			}			
+		}
+		console.log(series);
+		$("#grafico").highcharts({
+			title : {
+				text : "Transferências do tesouro para " + $scope.municipio.nome
+			},
+			yAxis : {
+				title : {
+					text : "Valor transferido"
+				},
+				min : 0
+			},
+			xAxis : {
+				title : {
+					text : "Ano"
+				},
+				categories : categorias
+			},
+			plotOptions : {
+				series : {
+					allowPointSelect : true
+				}
+			},
+			series : series
+		});
+	}
+
 })

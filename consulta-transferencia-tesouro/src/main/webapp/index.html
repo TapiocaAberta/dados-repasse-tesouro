@@ -68,12 +68,39 @@ select {
 			</p>
 
 			<div class="row">
-				<h2>TODO: criar formulário</h2>
-				<form class="form-inline"></form>
+				<i> Para mais detalhes sobre os repasses federais, veja a
+					aplicação <a href="http://repasse.ufabc.edu.br/">Repasse</a>
+				</i> <br />
+				<br />
+				<form class="form-inline">
+					<div class="input-group">
+						<span class="input-group-addon" id="estadoLbl">Estado </span> <select
+							class="form-control" aria-describedby="estadoLbl"
+							ng-model="estado" ng-change="carregaMunicipios()"
+							ng-options="e for e in estados">
+						</select>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon" id="municipioLbl">Município
+						</span> <select class="form-control" aria-describedby="municipioLbl"
+							ng-model="municipio" ng-disabled="!municipios"
+							ng-change="carregaTransferencias()"
+							ng-options="m.nome for m in municipios">
+						</select>
+					</div>
+					<div class="input-group">
+						<button class="form-control btn btn-default "
+							ng-click="verTodasTransferencias()" ng-disabled="carregando">
+							Ver Transferências</button>
+					</div>
+					<span class="label label-warning" style="font-size: 16px"
+						ng-show="carregando" id="lblCarregar">Carregando</span>
+				</form>
 			</div>
 			<div class="row">
 				<div id="grafico"></div>
 			</div>
+
 		</div>
 
 	</section>

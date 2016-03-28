@@ -31,7 +31,7 @@ import org.transparenciasjc.transftesouro.service.impl.FundoService;
 @Singleton
 public class CargaDadosBase {
 
-	private static final String TTR_PROP = "/dados/fundos.properties";
+	private static final String FUNDO_PROP = "/dados/fundos.properties";
 
 	private static final String MUNICIPIOS_CSV = "/dados/municipios.csv";
 
@@ -54,17 +54,17 @@ public class CargaDadosBase {
 
 	private void carregaTipoTransferencias() throws IOException {
 		Properties tiposTransfProp = new Properties();
-		InputStream tiposTransf = getClass().getResourceAsStream(TTR_PROP);
+		InputStream tiposTransf = getClass().getResourceAsStream(FUNDO_PROP);
 		tiposTransfProp.load(tiposTransf);
 		tiposTransfProp.forEach(this::salvaTransferencia);
 
 	}
 
 	private void salvaTransferencia(Object nome, Object desc) {
-		Fundo ttr = new Fundo();
-		ttr.setNome(nome.toString());
-		ttr.setDescricao(desc.toString());
-		fundoService.atualizar(ttr);
+		Fundo fundo = new Fundo();
+		fundo.setNome(nome.toString());
+		fundo.setDescricao(desc.toString());
+		fundoService.buscaFundoPorNomeOuCria(nome.toString(), () -> fundo);
 	}
 
 	private void carregaMunicipios() {

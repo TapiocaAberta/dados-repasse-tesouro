@@ -3,6 +3,8 @@
  */
 var transfTesouroApp = angular.module('TransfTesouroApp', []);
 
+var SEPARADOR_URL = "&";
+
 // Pego do seguinte site:
 // http://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 window.mobileAndTabletcheck = function() {
@@ -37,6 +39,10 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 	}
 
 	$scope.verTodasTransferencias = function() {
+		var mapaUrl = {};
+		mapaUrl['id'] =   $scope.municipio.id;
+		mapaUrl['nome'] = $scope.municipio.nome;
+		salvaMapaUrl(mapaUrl);
 		$scope.carregando = true;
 		$http.get("rest/municipio/" + $scope.municipio.id + "/transferencias")
 				.success(function(dados) {
@@ -55,7 +61,13 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 					mostraDados(valoresGrafico)
 				});
 	}
-
+	var paramsUrl = recuperaMapaUrl();
+	if(paramsUrl['id'] && paramsUrl['nome']) {
+		$scope.municipio = {};
+		$scope.municipio.nome = paramsUrl['nome'];
+		$scope.municipio.id = paramsUrl['id'];
+		$scope.verTodasTransferencias();
+	}
 	var mostraDados = function(dados) {
 		var categorias = [];
 		var series = [];
@@ -118,4 +130,22 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 				});
 	}
 
-})
+});
+
+function recuperaMapaUrl() {
+	var todos = window.location.hash.replace('#',  '');
+	var params = {};
+	$.each(todos.split(SEPARADOR_URL), function(i, v){
+		var campos = v.split('=');
+		params[campos[0]] = campos[1];
+	});
+	return params;
+}
+
+function salvaMapaUrl(params) {
+	var novaUrl = '';
+	$.each(params, function(i, v){
+		novaUrl += i + '=' + v + SEPARADOR_URL;
+	});
+	window.location.hash = novaUrl.substring(0, novaUrl.length - 1);
+}

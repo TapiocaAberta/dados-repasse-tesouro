@@ -3,6 +3,13 @@ package org.transparenciasjc.transftesouro.model.dto;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * 
+ * Objeto que carrega as informações básicas de transferências do tesouro
+ * 
+ * @author wsiqueir
+ *
+ */
 @XmlRootElement
 public class TransferenciaDTO {
 

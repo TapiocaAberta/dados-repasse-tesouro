@@ -45,7 +45,8 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 		salvaMapaUrl(mapaUrl);
 		$scope.carregando = true;
 		$http.get("rest/municipio/" + $scope.municipio.id + "/transferencias")
-				.success(function(dados) {
+				.then(function(response) {
+					var dados = response.data
 					$scope.carregando = false;
 					var valoresGrafico = {};
 					for (i in dados.dadosTransferencia) {
@@ -59,6 +60,12 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 						valoresGrafico[d.ano][d.tipo] += d.valor;
 					}
 					mostraDados(valoresGrafico)
+				}, function(response) {
+					$scope.carregando = false;
+					if(response.status == 404) {
+						alert('Dados não encontrados! Tente outro município.')
+					}
+					
 				});
 	}
 	var paramsUrl = recuperaMapaUrl();

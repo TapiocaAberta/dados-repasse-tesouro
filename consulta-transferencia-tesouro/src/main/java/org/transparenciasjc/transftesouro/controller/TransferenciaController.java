@@ -32,8 +32,7 @@ public class TransferenciaController {
 	
 	Logger logger = Logger.getLogger(TransferenciaController.class);
 	
-	public TransferenciaDTO buscaDadosParaMunicipio(long munId) {
-		Municipio municipio = municipioService.buscarPorId(munId);
+	public TransferenciaDTO buscaDadosParaMunicipio(Municipio municipio) {
 		LocalDateTime ultimoMes = LocalDateTime.now().minusMonths(1);
 		int ano = ultimoMes.getYear();
 		int mes = ultimoMes.getMonthValue();

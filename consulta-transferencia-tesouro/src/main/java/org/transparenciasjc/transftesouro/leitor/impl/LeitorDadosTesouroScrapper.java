@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.jboss.logging.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -29,6 +30,8 @@ import org.transparenciasjc.transftesouro.model.dto.TransferenciaDTO;
 public class LeitorDadosTesouroScrapper implements LeitorDadosTesouro {
 
 	static private NumberFormat nfPtBr;
+	
+	Logger logger = Logger.getLogger(LeitorDadosTesouroScrapper.class);
 	static {
 		Locale ptBr = new Locale("pt", "BR");
 		nfPtBr = NumberFormat.getNumberInstance(ptBr);
@@ -36,6 +39,7 @@ public class LeitorDadosTesouroScrapper implements LeitorDadosTesouro {
 
 	@Override
 	public TransferenciaDTO leDadosMunicipio(Municipio municipio) {
+		logger.info("Scraping dados para município: " + municipio);
 		Connection conexao = Jsoup.connect(URL_BASE_TESOURO);
 		Map<String, String> params = configuraParametos(municipio);
 		conexao.data(params).timeout(5000).method(Connection.Method.POST);

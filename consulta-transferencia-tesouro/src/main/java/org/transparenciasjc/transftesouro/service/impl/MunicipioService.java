@@ -14,5 +14,13 @@ public class MunicipioService extends Service<Municipio> {
 		buscaMunicipios.setParameter("sigla", sigla);
 		return buscaMunicipios.getResultList();	
 	}
+	
+	
+	public Municipio porNomeESigla(String sigla, String nome) {
+		TypedQuery<Municipio> buscaMunicipios = em.createNamedQuery("Municipio.porNomeESigla", Municipio.class);
+		buscaMunicipios.setParameter("sigla", sigla);
+		buscaMunicipios.setParameter("nome", nome);
+		return buscaMunicipios.getSingleResult();	
+	}
 
 }

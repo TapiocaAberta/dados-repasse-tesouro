@@ -16,13 +16,13 @@ public class TransferenciaTesouroService extends Service<TransferenciaTesouro> {
 		buscaValores.setParameter("municipio", municipio);
 		buscaValores.setParameter("ano", ano);
 		buscaValores.setParameter("mes", mes);
-		int contagem = buscaValores.getFirstResult();
+		long contagem = buscaValores.getSingleResult();
 		return contagem > 0;
 	}
 
 	public List<TransferenciaTesouro> busca(Municipio municipio) {
 		TypedQuery<TransferenciaTesouro> buscaTransferencias = em
-				.createNamedQuery("TransferenciaTesouro.buscaMunicipio",
+				.createNamedQuery("TransferenciaTesouro.buscaPorMunicipio",
 						TransferenciaTesouro.class);
 		buscaTransferencias.setParameter("municipio", municipio);
 		return buscaTransferencias.getResultList();

@@ -18,7 +18,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "municipio")
 @Cacheable
-@NamedQueries({ @NamedQuery(name = "Municipio.porSigla", query = "SELECT m FROM Municipio m WHERE m.estado.sigla = :sigla ORDER BY m.nome") })
+@NamedQueries({
+		@NamedQuery(name = "Municipio.porSigla", query = "SELECT m FROM Municipio m WHERE m.estado.sigla = :sigla ORDER BY m.nome"),
+		@NamedQuery(name = "Municipio.porNomeESigla", query = "SELECT m FROM Municipio m WHERE m.nome = :nome AND m.estado.sigla = :sigla") })
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "cache-classes-basicas")
 public class Municipio {
 

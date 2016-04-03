@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.transparenciasjc.transftesouro.model.Estado;
 import org.transparenciasjc.transftesouro.model.Municipio;
 import org.transparenciasjc.transftesouro.model.Fundo;
@@ -45,22 +46,29 @@ public class CargaDadosBase {
 
 	@Inject
 	FundoService fundoService;
+	
+	Logger logger = Logger.getLogger(CargaDadosBase.class);
 
 	@PostConstruct
 	public void cargaDadosBase() throws URISyntaxException, IOException {
+		logger.info("Iniciandos carga de dados base.");
+		logger.info("Salvando municípios... ");
 		carregaMunicipios();
+		logger.info("Salvando fundos...");
 		carregaTipoTransferencias();
+		logger.info("Fim carga dados base.");
 	}
 
 	private void carregaTipoTransferencias() throws IOException {
 		Properties tiposTransfProp = new Properties();
 		InputStream tiposTransf = getClass().getResourceAsStream(FUNDO_PROP);
 		tiposTransfProp.load(tiposTransf);
-		tiposTransfProp.forEach(this::salvaTransferencia);
+		tiposTransfProp.forEach(this::salvaFundo);
 
 	}
 
-	private void salvaTransferencia(Object nome, Object desc) {
+	private void salvaFundo(Object nome, Object desc) {
+		
 		Fundo fundo = new Fundo();
 		fundo.setNome(nome.toString());
 		fundo.setDescricao(desc.toString());

@@ -9,12 +9,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "transferencia_tesouro")
-@NamedQueries(
-		{@NamedQuery(name="TransferenciaTesouro.contaPorAnoMesMunicipio", query="SELECT COUNT(t) FROM TransferenciaTesouro t WHERE t.municipio = :municipio AND t.ano = :ano AND t.mes = :mes")}
-		)
+@Table(name = "transferencia_tesouro", uniqueConstraints={
+		@UniqueConstraint(columnNames= {"trt_ano", "trt_mes", "transferencia_tesouro_mun_id", "transferencia_tesouro_fnd_id"})
+		
+})
+@NamedQueries({
+		@NamedQuery(name = "TransferenciaTesouro.contaPorAnoMesMunicipio", query = "SELECT COUNT(t) FROM TransferenciaTesouro t WHERE t.municipio = :municipio AND t.ano = :ano AND t.mes = :mes"),
+		@NamedQuery(name = "TransferenciaTesouro.buscaPorMunicipio", query = "SELECT t FROM TransferenciaTesouro t WHERE t.municipio = :municipio") })
 public class TransferenciaTesouro {
 
 	@Id
@@ -85,6 +89,11 @@ public class TransferenciaTesouro {
 
 	public void setValor(float valor) {
 		this.valor = valor;
+	}
+	
+	@Override
+	public String toString() {
+		return "[municipio=" + municipio.getNome() + ", ano=" + ano +", mes=" + mes+ ", fundo=" + fundo.getNome() +"]" ;
 	}
 
 }

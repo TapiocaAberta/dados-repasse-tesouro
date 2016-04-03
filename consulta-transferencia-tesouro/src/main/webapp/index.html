@@ -113,7 +113,22 @@ select {
 			</div>
 
 			<div class="row">
-				<h2>TODO: Descrever o funcionamento</h2>
+				<h3>Para usuários: </h3>
+				<p>
+					Esse é um sistema para simplificar os dados de transferência para municípios do tesouro. Você pode escolher o seu estado e em seguida o município para ver os dados. <br />
+					Ao escolher os dados, note que o endereço da página muda. Assim você pode copiar o endereço e compartilhar com seus amigos.
+				</p>
+				<br />
+				<h3>Para desenvolvedores: </h3>
+				<p>
+					Como sempre o código é aberto e está no <a href="https://github.com/transparenciasjc/dados-repasse-tesouro">github</a>, sinta-se a vontade para contribuir. 
+					<br />Você pode ainda usar nossa simples API REST, cujo retorno é sempre usando dados no formato JSON:
+				</p>
+				<ul>
+						<li><b>/rest/estado/{sigla}/municipios</b> Retorna municípios para o estado com a sigla passada. </li>
+						<li><b>/rest/municipio/{munId}/transferencias</b> Retorna todas as transferências para o município ID munId passado como parâmetro</li>
+						<li><b>/rest/municipio/{munId}/transferencias/ano/{ano}</b> Retorna as transferências para o município ID munId e ano passados como parâmetros</li>
+					</ul>
 			</div>
 		</div>
 	</section>

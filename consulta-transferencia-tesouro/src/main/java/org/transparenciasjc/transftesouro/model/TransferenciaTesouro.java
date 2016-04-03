@@ -18,7 +18,9 @@ import javax.persistence.UniqueConstraint;
 })
 @NamedQueries({
 		@NamedQuery(name = "TransferenciaTesouro.contaPorAnoMesMunicipio", query = "SELECT COUNT(t) FROM TransferenciaTesouro t WHERE t.municipio = :municipio AND t.ano = :ano AND t.mes = :mes"),
-		@NamedQuery(name = "TransferenciaTesouro.buscaPorMunicipio", query = "SELECT t FROM TransferenciaTesouro t WHERE t.municipio = :municipio") })
+		@NamedQuery(name = "TransferenciaTesouro.contaPorAnoMesMunicipioFundo", query = "SELECT COUNT(t) FROM TransferenciaTesouro t WHERE t.municipio = :municipio AND t.fundo = :fundo AND t.ano = :ano AND t.mes = :mes"),
+		@NamedQuery(name = "TransferenciaTesouro.buscaPorMunicipio", query = "SELECT t FROM TransferenciaTesouro t WHERE t.municipio = :municipio") }
+)
 public class TransferenciaTesouro {
 
 	@Id

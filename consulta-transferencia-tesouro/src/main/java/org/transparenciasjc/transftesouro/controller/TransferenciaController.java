@@ -47,13 +47,13 @@ public class TransferenciaController {
 			retorno = TransferenciaDTO.transforma(busca);			
 		} else {
 			retorno = leitorScrapper.leDadosMunicipio(municipio);
+			// remove dados do mês atual, pois podem estar desatualizados
+			List<DadosTransferencia> dados = retorno.getDadosTransferencia()
+					.stream().filter(d -> !(d.getAno() == ano && d.getMes() == mes))
+					.collect(Collectors.toList());
+			retorno.setDadosTransferencia(dados);
 			persistenciaTransferenciaController.salva(retorno);
 		}
-		// remove dados do mês atual, pois podem estar desatualizados
-		List<DadosTransferencia> dados = retorno.getDadosTransferencia()
-				.stream().filter(d -> !(d.getAno() == ano && d.getMes() == mes))
-				.collect(Collectors.toList());
-		retorno.setDadosTransferencia(dados);
 		return retorno;
 	}
 

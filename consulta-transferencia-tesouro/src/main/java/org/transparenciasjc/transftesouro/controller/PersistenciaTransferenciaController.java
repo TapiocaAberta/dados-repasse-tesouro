@@ -43,10 +43,15 @@ public class PersistenciaTransferenciaController {
 		String sigla = transferenciaDTO.getEstado();
 		Municipio municipio = municipioService.porNomeESigla(sigla, nomeMun);
 		for (DadosTransferencia dados : transferenciaDTO.getDadosTransferencia()) {
+			int mes = dados.getMes();
+			int ano = dados.getAno();
+			if(transferenciaService.haValores(municipio, ano, mes)) {
+				continue;
+			}
 			Fundo fundo = fundoService.buscaFundoPorNome(dados.getTipo());
 			TransferenciaTesouro transferencia = new TransferenciaTesouro();
-			transferencia.setAno(dados.getAno());
-			transferencia.setMes(dados.getMes());
+			transferencia.setAno(ano);
+			transferencia.setMes(mes);
 			transferencia.setFundo(fundo);
 			transferencia.setMunicipio(municipio);
 			transferencia.setValor(dados.getValor());

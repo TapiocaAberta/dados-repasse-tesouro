@@ -35,6 +35,8 @@ public class PersistenciaTransferenciaController {
 	@Inject FundoService fundoService;
 	
 	Logger logger = Logger.getLogger(PersistenciaTransferenciaController.class);
+	
+	int totalLinhasSalvas;
 
 	@Asynchronous
 	public void salva(TransferenciaDTO transferenciaDTO) {
@@ -42,6 +44,7 @@ public class PersistenciaTransferenciaController {
 		String nomeMun = transferenciaDTO.getMunicipio();
 		String sigla = transferenciaDTO.getEstado();
 		Municipio municipio = municipioService.porNomeESigla(sigla, nomeMun);
+		totalLinhasSalvas = 0;
 		for (DadosTransferencia dados : transferenciaDTO.getDadosTransferencia()) {
 			int mes = dados.getMes();
 			int ano = dados.getAno();
@@ -57,7 +60,7 @@ public class PersistenciaTransferenciaController {
 			transferencia.setValor(dados.getValor());
 			salvaDados(transferencia);
 		}
-		logger.info("Dados salvos para: " + transferenciaDTO);
+		logger.info("Total de " + totalLinhasSalvas + " linhas salvas para: " + transferenciaDTO);
 	}
 
 	/**
@@ -69,6 +72,7 @@ public class PersistenciaTransferenciaController {
 	private void salvaDados(TransferenciaTesouro transferencia) {
 		try {
 			transferenciaService.salvar(transferencia);
+			totalLinhasSalvas++;
 		} catch (ConstraintViolationException e) {
 			logger.debug("Dados para a seguinte não salvos. Dados repetidos? " + transferencia, e);
 		}

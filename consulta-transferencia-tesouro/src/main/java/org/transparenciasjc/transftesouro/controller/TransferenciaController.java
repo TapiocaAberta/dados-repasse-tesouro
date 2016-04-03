@@ -2,6 +2,7 @@ package org.transparenciasjc.transftesouro.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import org.transparenciasjc.transftesouro.leitor.LeitorDadosTesouro;
 import org.transparenciasjc.transftesouro.leitor.TesouroScrapper;
 import org.transparenciasjc.transftesouro.model.Municipio;
 import org.transparenciasjc.transftesouro.model.TransferenciaTesouro;
+import org.transparenciasjc.transftesouro.model.dto.DadosTransferencia;
 import org.transparenciasjc.transftesouro.model.dto.TransferenciaDTO;
 import org.transparenciasjc.transftesouro.service.impl.MunicipioService;
 import org.transparenciasjc.transftesouro.service.impl.TransferenciaTesouroService;
@@ -33,9 +35,9 @@ public class TransferenciaController {
 	Logger logger = Logger.getLogger(TransferenciaController.class);
 	
 	public TransferenciaDTO buscaDadosParaMunicipio(Municipio municipio) {
-		LocalDateTime ultimoMes = LocalDateTime.now().minusMonths(1);
-		int ano = ultimoMes.getYear();
-		int mes = ultimoMes.getMonthValue();
+		LocalDateTime atual = LocalDateTime.now();
+		int ano = atual.getYear();
+		int mes = atual.getMonthValue();
 		TransferenciaDTO retorno = null;
 		if(transferenciaService.haValores(municipio, ano, mes)) {
 			List<TransferenciaTesouro> busca = transferenciaService.busca(municipio);
@@ -44,6 +46,11 @@ public class TransferenciaController {
 			retorno = leitorScrapper.leDadosMunicipio(municipio);
 			persistenciaTransferenciaController.salva(retorno);
 		}
+		// remove dados do mês atual, pois podem estar desatualizados
+		List<DadosTransferencia> dados = retorno.getDadosTransferencia()
+				.stream().filter(d -> !(d.getAno() == ano && d.getMes() == mes))
+				.collect(Collectors.toList());
+		retorno.setDadosTransferencia(dados);
 		return retorno;
 	}
 

@@ -40,13 +40,14 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 
 	$scope.verTodasTransferencias = function() {
 		var mapaUrl = {};
-		mapaUrl['id'] =   $scope.municipio.id;
+		mapaUrl['id'] = $scope.municipio.id;
 		mapaUrl['nome'] = $scope.municipio.nome;
 		salvaMapaUrl(mapaUrl);
 		$scope.carregando = true;
 		$http.get("rest/municipio/" + $scope.municipio.id + "/transferencias")
 				.then(function(response) {
 					var dados = response.data
+					$scope.dadosMunicipioSelecionado = dados;
 					$scope.carregando = false;
 					var valoresGrafico = {};
 					for (i in dados.dadosTransferencia) {
@@ -62,14 +63,14 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 					mostraDados(valoresGrafico)
 				}, function(response) {
 					$scope.carregando = false;
-					if(response.status == 404) {
+					if (response.status == 404) {
 						alert('Dados não encontrados! Tente outro município.')
 					}
-					
+
 				});
 	}
 	var paramsUrl = recuperaMapaUrl();
-	if(paramsUrl['id'] && paramsUrl['nome']) {
+	if (paramsUrl['id'] && paramsUrl['nome']) {
 		$scope.municipio = {};
 		$scope.municipio.nome = paramsUrl['nome'];
 		$scope.municipio.id = paramsUrl['id'];
@@ -101,7 +102,7 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 				serie.data.push(d[j]);
 			}
 		}
-		console.log(series);
+
 		$("#grafico").highcharts(
 				{
 					title : {
@@ -109,7 +110,7 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 								+ $scope.municipio.nome
 					},
 					tooltip : {
-						headerFormat: '{point.key} - {series.name}<br />',
+						headerFormat : '{point.key} - {series.name}<br />',
 						pointFormat : '<b>R$ {point.y:,.3f}</b>'
 					},
 					yAxis : {
@@ -134,16 +135,35 @@ transfTesouroApp.controller('TransfTesouroController', function($scope, $http) {
 							allowPointSelect : true
 						}
 					},
-					series : series
+					series : series,
+					plotOptions : {
+						series : {
+							cursor : 'pointer',
+							point : {
+								events : {
+									click : function() {
+										var ano = parseInt(this.category);
+										var tipo = this.series.name;
+										$scope.dadosAnoSelecionado = $.grep($scope.dadosMunicipioSelecionado.dadosTransferencia, function(d){
+											if(d.ano == ano && d.tipo == tipo) return d;
+										});
+										$scope.$apply();
+										$('#modalDadosSelecionados').modal()
+									}
+								}
+							}
+						}
+					}
+
 				});
 	}
 
 });
 
 function recuperaMapaUrl() {
-	var todos = window.location.hash.replace('#',  '');
+	var todos = window.location.hash.replace('#', '');
 	var params = {};
-	$.each(todos.split(SEPARADOR_URL), function(i, v){
+	$.each(todos.split(SEPARADOR_URL), function(i, v) {
 		var campos = v.split('=');
 		params[campos[0]] = campos[1];
 	});
@@ -152,7 +172,7 @@ function recuperaMapaUrl() {
 
 function salvaMapaUrl(params) {
 	var novaUrl = '';
-	$.each(params, function(i, v){
+	$.each(params, function(i, v) {
 		novaUrl += i + '=' + v + SEPARADOR_URL;
 	});
 	window.location.hash = novaUrl.substring(0, novaUrl.length - 1);

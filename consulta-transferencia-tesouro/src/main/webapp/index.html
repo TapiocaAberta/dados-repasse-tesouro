@@ -113,22 +113,42 @@ select {
 			</div>
 
 			<div class="row">
-				<h3>Para usuários: </h3>
+				<h3>Para usuários:</h3>
 				<p>
-					Esse é um sistema para simplificar os dados de transferência para municípios do tesouro. Você pode escolher o seu estado e em seguida o município para ver os dados. <br />
-					Ao escolher os dados, note que o endereço da página muda. Assim você pode copiar o endereço e compartilhar com seus amigos.
+					Esse é um sistema para simplificar os dados de transferência para
+					municípios do tesouro. Você pode escolher o seu estado e em seguida
+					o município para ver os dados. <br /> Ao escolher os dados, note
+					que o endereço da página muda. Assim você pode copiar o endereço e
+					compartilhar com seus amigos. <br /> Caso não entenda muito bem o
+					que é isso, aqui vai uma breve explicação: <em>Todos os meses,
+						o governo federal realiza repasses para municípios de todo o país.
+						Os repasses do tesouro especificamente, são feito através dos
+						fundos, cuja breve explicação pode ser <a
+						href="https://github.com/transparenciasjc/dados-repasse-tesouro/blob/master/README.md">encontrada
+							aqui</a>.
+					</em>
+					<br />
+					Caso queira uma ferramenta mais detalhada sobre os repasses para seu município, veja a <a href="http://repasse.ufabc.edu.br/">ferramenta Repasse</a>.
 				</p>
 				<br />
-				<h3>Para desenvolvedores: </h3>
+				<h3>Para desenvolvedores:</h3>
 				<p>
-					Como sempre o código é aberto e está no <a href="https://github.com/transparenciasjc/dados-repasse-tesouro">github</a>, sinta-se a vontade para contribuir. 
-					<br />Você pode ainda usar nossa simples API REST, cujo retorno é sempre usando dados no formato JSON:
+					Como sempre o código é aberto e está no <a
+						href="https://github.com/transparenciasjc/dados-repasse-tesouro">github</a>,
+					sinta-se a vontade para contribuir. <br />Você pode ainda usar
+					nossa simples API REST, cujo retorno é sempre usando dados no
+					formato JSON:
 				</p>
 				<ul>
-						<li><b>/rest/estado/{sigla}/municipios</b> Retorna municípios para o estado com a sigla passada. </li>
-						<li><b>/rest/municipio/{munId}/transferencias</b> Retorna todas as transferências para o município ID munId passado como parâmetro</li>
-						<li><b>/rest/municipio/{munId}/transferencias/ano/{ano}</b> Retorna as transferências para o município ID munId e ano passados como parâmetros</li>
-					</ul>
+					<li><b>/rest/estado/{sigla}/municipios</b> Retorna municípios
+						para o estado com a sigla passada.</li>
+					<li><b>/rest/municipio/{munId}/transferencias</b> Retorna
+						todas as transferências para o município ID munId passado como
+						parâmetro</li>
+					<li><b>/rest/municipio/{munId}/transferencias/ano/{ano}</b>
+						Retorna as transferências para o município ID munId e ano passados
+						como parâmetros</li>
+				</ul>
 			</div>
 		</div>
 	</section>
@@ -155,17 +175,23 @@ select {
 			</div>
 		</div>
 	</section>
-	
+
 	<!-- modal com os dados selecionados -->
-	<div class="modal fade" tabindex="-1" role="dialog" id="modalDadosSelecionados">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Transferências no ano {{dadosAnoSelecionado[0].ano}} do fundo {{dadosAnoSelecionado[0].tipo}} para {{municipio.nome}}</h4>
-      </div>
-      <div class="modal-body">
-					
+	<div class="modal fade" tabindex="-1" role="dialog"
+		id="modalDadosSelecionados">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Transferências no ano
+						{{dadosAnoSelecionado[0].ano}} do fundo
+						{{dadosAnoSelecionado[0].tipo}} para {{municipio.nome}}</h4>
+				</div>
+				<div class="modal-body">
+
 					<table class="table">
 						<thead>
 							<tr>
@@ -179,10 +205,13 @@ select {
 							<td>R$ {{ t.valor.toLocaleString() }}</td>
 						</tr>
 					</table>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 
 	<footer class="footer">
 		<div class="container">

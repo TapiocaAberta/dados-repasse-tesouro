@@ -36,10 +36,13 @@ public class TransferenciaController {
 	
 	public TransferenciaDTO buscaDadosParaMunicipio(Municipio municipio) {
 		LocalDateTime atual = LocalDateTime.now();
+		LocalDateTime anterior = atual.minusMonths(1);
 		int ano = atual.getYear();
 		int mes = atual.getMonthValue();
+		int anoAnterior = anterior.getYear();
+		int mesAnterior = anterior.getMonthValue();
 		TransferenciaDTO retorno = null;
-		if(transferenciaService.haValores(municipio, ano, mes)) {
+		if(transferenciaService.haValores(municipio, anoAnterior, mesAnterior)) {
 			List<TransferenciaTesouro> busca = transferenciaService.busca(municipio);
 			retorno = TransferenciaDTO.transforma(busca);			
 		} else {
